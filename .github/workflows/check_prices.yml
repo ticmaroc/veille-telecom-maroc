@@ -1,0 +1,28 @@
+name: Mobile Monitoring Robot
+on:
+  schedule:
+    - cron: '0 */6 * * *' # Toutes les 6 heures
+  workflow_dispatch: # Permet de le lancer à la main pour tester
+
+jobs:
+  scrape:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+          playwright install chromium
+      - name: Run Monitoring
+        run: python scraper.py
+      - name: Save changes
+        run: |
+          git config --global user.name 'Robot-TIC-Maroc'
+          git config --global user.email 'bot@ticmaroc.com'
+          git add last_state.json
+          git commit -m "Mise à jour de la mémoire" || exit 0
+          git push
