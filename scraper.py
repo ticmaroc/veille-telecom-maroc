@@ -3,66 +3,65 @@ import asyncio
 import re
 from playwright.async_api import async_playwright
 
-async def get_price_from_svg(page, url):
-    """Utilise Playwright pour lire le contenu du SVG sans bibliothèque extra"""
-    try:
-        # On demande au navigateur d'aller chercher le contenu brut de l'image
-        response = await page.request.get(url)
-        if response.status == 200:
-            content = await response.text()
-            # On cherche un nombre suivi de DH (ex: 249 DH) dans le code XML du SVG
-            match = re.search(r'(\d+)\s*(?:DH|dh)', content)
-            if match:
-                return f"{match.group(1)} DH"
-    except:
-        pass
-    return "Prix non textuel"
-
 async def scrape_orange_fibre(context):
     page = await context.new_page()
     results = []
     try:
-        print("🌐 Accès à Orange Fibre...")
+        print("🌐 Scan profond d'Orange Fibre...")
         await page.goto("https://www.orange.ma/WiFi-a-la-Maison/Fibre-d-Orange/Offres-Fibre-d-Orange", wait_until="networkidle", timeout=60000)
         
-        # On cible les cartes que vous avez trouvées
-        cards = await page.query_selector_all(".fibre-card")
-        for card in cards:
-            img = await card.query_selector("img")
-            if img:
-                alt = await img.get_attribute("alt")
-                src = await img.get_attribute("src")
-                
-                # On transforme l'URL relative en URL complète si besoin
-                if src.startswith('/'):
-                    src = "https://www.orange.ma" + src
-                
-                # On va lire le code de l'image
-                price = await get_price_from_svg(page, src)
-                results.append(f"Orange Fibre {alt} : {price}")
+        # 1. On récupère TOUT le contenu de la page (même le code caché)
+        content = await page.content()
         
+        # 2. On cherche les prix "logiques" (entre 199 et 2000 DH)
+        # On cherche un nombre de 3 ou 4 chiffres suivi de DH
+        prices = re.findall(r'([2-9]\d{2,3})\s*(?:DH|dh)', content)
+        # On enlève les doublons et on trie
+        prices = sorted(list(set(prices)))
+
+        # 3. On récupère les vitesses (20, 50, 100...)
+        speeds = ["20 Méga", "50 Méga", "100 Méga", "200 Méga", "500 Méga", "1000 Méga"]
+
+        # 4. On associe les deux (Heuristique)
+        # Généralement : 20M=249, 50M=349, 100M=449...
+        for i in range(len(prices)):
+            if i < len(speeds):
+                results.append(f"Orange Fibre {speeds[i]} : {prices[i]} DH")
+        
+        if not results:
+            # Si le scan JSON échoue, on tente de lire les balises "data"
+            results = await page.evaluate("""() => {
+                let items = [];
+                document.querySelectorAll('[data-price]').forEach(el => {
+                    items.push(el.getAttribute('data-price') + " DH");
+                });
+                return items;
+            }""")
+
         await page.close()
-        return results
+        return results if results else ["⚠️ Prix introuvables (Protections Orange)"]
     except Exception as e:
-        print(f"❌ Erreur Orange : {e}")
         await page.close()
-        return ["⚠️ Orange Fibre : Erreur de lecture"]
+        return [f"❌ Erreur : {str(e)}"]
 
 async def run_scraper():
     async with async_playwright() as p:
         browser = await p.chromium.launch(headless=True)
-        context = await browser.new_context(user_agent="Mozilla/5.0...")
+        context = await browser.new_context(
+            user_agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36"
+        )
         
-        # On lance le scan spécifique pour Orange
-        orange_results = await scrape_orange_fibre(context)
+        orange_fibre = await scrape_orange_fibre(context)
         
-        # On affiche le résultat dans les logs pour vérifier
-        for res in orange_results:
-            print(f"✅ Trouvé : {res}")
+        # Affichage propre dans les logs
+        print("\n--- RÉSULTATS ORANGE FIBRE ---")
+        for res in orange_fibre:
+            print(f"✅ {res}")
 
-        # Sauvegarde simple pour test
+        # Sauvegarde
+        output = {"Orange_Fibre": orange_fibre}
         with open("last_state.json", "w", encoding='utf-8') as f:
-            json.dump({"Orange_Fibre": orange_results}, f, ensure_ascii=False, indent=4)
+            json.dump(output, f, ensure_ascii=False, indent=4)
             
         await browser.close()
 
