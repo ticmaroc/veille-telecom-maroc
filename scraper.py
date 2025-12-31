@@ -1,88 +1,37 @@
-import json
 import asyncio
 from playwright.async_api import async_playwright
 
-# 1. Vos 17 cibles complètes
-TARGETS = {
-    "Orange_Mobile": "https://boutique.orange.ma/offres-mobile",
-    "Orange_Dar_Box": "https://boutique.orange.ma/dar-box",
-    "Orange_Dar_Box_5G": "https://boutique.orange.ma/offres-dar-box/dar-box-5g",
-    "Orange_ADSL_Ultra": "https://www.orange.ma/WiFi-a-la-Maison/ADSL-ULTRA/Offres-ADSL-ULTRA",
-    "Orange_Fibre": "https://www.orange.ma/WiFi-a-la-Maison/Fibre-d-Orange/Offres-Fibre-d-Orange",
-    "Yoxo_Maroc": "https://www.yoxo.ma/",
-    "IAM_Mobile_Forfaits": "https://www.iam.ma/forfaits-mobile",
-    "IAM_Mobile_Illimites": "https://www.iam.ma/illimites-mobile",
-    "IAM_Box_El_Manzil_5G": "https://www.iam.ma/box-el-manzil-5g",
-    "IAM_Box_4G": "https://www.iam.ma/box-4g",
-    "IAM_ADSL": "https://www.iam.ma/offre-adsl",
-    "Injoy_Maroc": "https://www.injoy.ma/injoy/home",
-    "Inwi_Mobile": "https://inwi.ma/fr/particuliers/offres-mobiles/forfait-mobile",
-    "Inwi_5G_iBox": "https://inwi.ma/fr/particuliers/offres-internet/wifi-a-la-maison/5g-i-box",
-    "Inwi_iDar_Duo": "https://inwi.ma/fr/particuliers/offres-internet/wifi-a-la-maison/idar-duo",
-    "Inwi_ADSL_Xtra": "https://inwi.ma/fr/particuliers/offres-internet/wifi-a-la-maison/adsl-xtra",
-    "Inwi_Fibre": "https://inwi.ma/fr/particuliers/offres-internet/wifi-a-la-maison/fibre-optique"
-}
-
-KEYWORDS = ["DH", "Dhs", "Go", "GB", "Heure", "H", "Min", "Illimit", "Méga", "Gbps", "Mbps"]
-
-def filter_useful_info(text):
-    lines = text.split('\n')
-    useful = []
-    for line in lines:
-        line = line.strip()
-        if any(k.lower() in line.lower() for k in KEYWORDS) and 1 < len(line) < 100:
-            if line not in useful:
-                useful.append(line)
-    return useful
-
-async def run_scraper():
+async def debug():
     async with async_playwright() as p:
-        # Initialisation du navigateur
         browser = await p.chromium.launch(headless=True)
-        context = await browser.new_context(
-            user_agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/120.0.0.0"
-        )
+        page = await browser.new_context().new_page()
         
-        final_results = {}
-        print(f"🚀 Début du scan de {len(TARGETS)} pages...")
+        print("🔍 Connexion à Orange Fibre...")
+        await page.goto("https://www.orange.ma/WiFi-a-la-Maison/Fibre-d-Orange/Offres-Fibre-d-Orange", wait_until="networkidle")
+        await asyncio.sleep(5) # On laisse les images charger
 
-        for name, url in TARGETS.items():
-            page = await context.new_page()
-            try:
-                print(f"🔍 Analyse : {name}")
-                await page.goto(url, wait_until="networkidle", timeout=60000)
-                
-                # Attente pour laisser les prix s'afficher
-                wait_time = 12 if any(x in url for x in ["yoxo", "orange", "injoy"]) else 7
-                await asyncio.sleep(wait_time)
-                
-                # Scroll pour activer les éléments dynamiques
-                await page.mouse.wheel(0, 1000)
-                await asyncio.sleep(2)
+        # On analyse chaque carte fibre une par une
+        cards = await page.query_selector_all(".fibre-card")
+        print(f"📦 Nombre de cartes trouvées : {len(cards)}")
 
-                raw_text = await page.evaluate("document.body.innerText")
-                final_results[name] = filter_useful_info(raw_text)
-                print(f"✅ {name} OK")
-            except Exception as e:
-                final_results[name] = [f"⚠️ Erreur de chargement"]
-                print(f"❌ Erreur sur {name}")
-            await page.close()
+        for i, card in enumerate(cards):
+            print(f"\n--- CARTE N°{i+1} ---")
+            # 1. On récupère le texte visible (s'il y en a)
+            text = await card.inner_text()
+            print(f"Texte visible : '{text.strip()}'")
 
-        # Sauvegarde JSON
-        with open("last_state.json", "w", encoding='utf-8') as f:
-            json.dump(final_results, f, ensure_ascii=False, indent=4)
+            # 2. On regarde l'image (alt et src)
+            img = await card.query_selector("img")
+            if img:
+                alt = await img.get_attribute("alt")
+                src = await img.get_attribute("src")
+                print(f"Image ALT : {alt}")
+                print(f"Image SRC : {src}")
+            
+            # 3. On cherche si le prix est caché dans le code HTML de la carte
+            html = await card.inner_html()
+            print(f"Code HTML partiel : {html[:100]}...") 
 
-        # Mise à jour du Tableau de Bord (README.md)
-        with open("README.md", "w", encoding='utf-8') as f:
-            f.write("# 📡 Observatoire Télécom Maroc\n\n")
-            f.write("| Offre / Service | Détails (Prix, Data, Vitesse) |\n")
-            f.write("| :--- | :--- |\n")
-            for op, infos in final_results.items():
-                details = " <br> ".join(infos) if infos else "Rien détecté"
-                f.write(f"| **{op.replace('_', ' ')}** | {details} |\n")
-        
         await browser.close()
-        print("📊 Tableau mis à jour !")
 
-if __name__ == "__main__":
-    asyncio.run(run_scraper())
+asyncio.run(debug())
