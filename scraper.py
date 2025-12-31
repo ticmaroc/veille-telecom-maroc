@@ -23,7 +23,6 @@ TARGETS = {
     "Inwi_Fibre": "https://inwi.ma/fr/particuliers/offres-internet/wifi-a-la-maison/fibre-optique"
 }
 
-# Mots-clés incluant les unités de vitesse pour la Fibre/ADSL
 KEYWORDS = ["DH", "Dhs", "Go", "GB", "Heure", "H", "Min", "Illimit", "Méga", "Gbps", "Mbps"]
 
 def filter_useful_info(text):
@@ -31,10 +30,59 @@ def filter_useful_info(text):
     useful = []
     for line in lines:
         line = line.strip()
-        # Correction : accepte les lignes dès 2 caractères pour ne pas rater "2H", "5G", etc.
         if any(k.lower() in line.lower() for k in KEYWORDS) and 1 < len(line) < 100:
             if line not in useful:
                 useful.append(line)
     return useful
 
 async def run_scraper():
+    async with async_playwright() as p:
+        # Initialisation du navigateur
+        browser = await p.chromium.launch(headless=True)
+        context = await browser.new_context(
+            user_agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/120.0.0.0"
+        )
+        
+        final_results = {}
+        print(f"🚀 Début du scan de {len(TARGETS)} pages...")
+
+        for name, url in TARGETS.items():
+            page = await context.new_page()
+            try:
+                print(f"🔍 Analyse : {name}")
+                await page.goto(url, wait_until="networkidle", timeout=60000)
+                
+                # Attente pour laisser les prix s'afficher
+                wait_time = 12 if any(x in url for x in ["yoxo", "orange", "injoy"]) else 7
+                await asyncio.sleep(wait_time)
+                
+                # Scroll pour activer les éléments dynamiques
+                await page.mouse.wheel(0, 1000)
+                await asyncio.sleep(2)
+
+                raw_text = await page.evaluate("document.body.innerText")
+                final_results[name] = filter_useful_info(raw_text)
+                print(f"✅ {name} OK")
+            except Exception as e:
+                final_results[name] = [f"⚠️ Erreur de chargement"]
+                print(f"❌ Erreur sur {name}")
+            await page.close()
+
+        # Sauvegarde JSON
+        with open("last_state.json", "w", encoding='utf-8') as f:
+            json.dump(final_results, f, ensure_ascii=False, indent=4)
+
+        # Mise à jour du Tableau de Bord (README.md)
+        with open("README.md", "w", encoding='utf-8') as f:
+            f.write("# 📡 Observatoire Télécom Maroc\n\n")
+            f.write("| Offre / Service | Détails (Prix, Data, Vitesse) |\n")
+            f.write("| :--- | :--- |\n")
+            for op, infos in final_results.items():
+                details = " <br> ".join(infos) if infos else "Rien détecté"
+                f.write(f"| **{op.replace('_', ' ')}** | {details} |\n")
+        
+        await browser.close()
+        print("📊 Tableau mis à jour !")
+
+if __name__ == "__main__":
+    asyncio.run(run_scraper())
