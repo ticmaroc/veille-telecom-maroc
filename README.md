@@ -1,22 +1,14 @@
 # 📡 Observatoire Télécom Maroc
-*Dernière mise à jour : 02/01/2026 22:41*
+*Mise à jour : 02/01/2026 23:17*
 
-| Opérateur / Service | Offres Détectées |
+| Opérateur | Offres & Tarifs Détillés |
 | :--- | :--- |
-| **Orange Mobile** | Forfait Yo 49 Dh • Forfait Yo 99 Dh • Forfait Yo 149 Dh • Forfait Yo 199 Dh • Forfait Yoxo 50 Dh • Forfait Yoxo 100 Dh • Forfait Yoxo 200 Dh • Forfait Yoxo 250 Dh • Forfait 49 DH • Forfait 99 DH • Forfait 149 DH • Forfait 199 DH |
-| **Orange Dar Box** | Forfait Yo 49 Dh • Forfait Yo 99 Dh • Forfait Yo 149 Dh • Forfait Yo 199 Dh • Forfait Yoxo 50 Dh • Forfait Yoxo 100 Dh • Forfait Yoxo 200 Dh • Forfait Yoxo 250 Dh • 2H d’appels vers le mobile national et fixe national • Frais de mise en service 199 Dh • Box Wifi 4 199Dh • Box Wifi 5 199 Dh |
-| **Orange Dar Box 5G** | Forfait Yo 49 Dh • Forfait Yo 99 Dh • Forfait Yo 149 Dh • Forfait Yo 199 Dh • Forfait Yoxo 50 Dh • Forfait Yoxo 100 Dh • Forfait Yoxo 200 Dh • Forfait Yoxo 250 Dh • Dar Box 5G 299Dh • 50 Méga • Frais de mise en service 299 Dh • Box Wifi 5G 799 Dh 349 Dh |
-| **Orange ADSL Ultra** |  |
-| **Orange Fibre** | Fibre 20M : 249 Dh • Fibre 50M : 299 Dh • Fibre 100M : 349 Dh • Fibre 200M : 449 Dh |
-| **Yoxo Maroc** | 20GO • 1H d'appels* • 60GO • 5H d'appels* • 80GO • 2Go Roaming** • 120GO • 5Go Roaming** |
-| **IAM Mobile Forfaits** | 59 DH/mois • 11 Go • 1 Heure • 99 DH/mois • 20 Go • 13 Go • 4 Heures • 119 DH/mois • 22 Go • 2 Heures • 15 Go • 5 Heures |
-| **IAM Mobile Illimites** | 259 DH/mois • 12 Go • 439 DH/mois • 100 Heures • 35 Go • 649 DH/mois • 699 DH/mois • 5 Go Roaming* • À partir de 10 DH/semaine • À partir de 28 DH/mois • À partir de 35 DH/mois |
-| **IAM Box El Manzil 5G** | 400 DH/mois • Frais de mise à disposition de la Box 5G: 349 DH • Frais de mise en service nouveau client: 200 DH |
-| **IAM Box 4G** | 199 DH/mois • 40 Go • 1 Heure • 450 DH/mois • 90 Go • 3 Heures • 350 DH/mois • 70 Go • 2 Heures • 20 DH • 2 Go • 30 DH |
-| **IAM ADSL** | 249 DH/mois • 299 DH/mois • 3H vers mobile national • 199 DH/mois • Internet haut débit allant jusqu’à 20 Mbps • 349 DH • 185 DH • 189 DH • 299 DH |
-| **Injoy Maroc** | 15 Go • 1 H • 59 DH/mois • 99 DH/mois • 25 Go • 2 H • 149 DH/mois • 40 Go • 199 DH/mois • 50 Go • 5 H • 70 DH/mois |
-| **Inwi Mobile** | 2Go d'internet • 1h d'appels vers le national • Forfait illimité Réseaux Sociaux + 15Go • 15Go d'internet • 2h d'appels vers le national • Forfait FLEXI 11GO+1H • 11Go d'internet • Forfait 18Go + 5H + WhatsApp Illimité • 18Go d'internet • 5h d'appels vers le national • Forfait 30Go + 1H + WhatsApp Illimité • 30Go d'internet |
-| **Inwi 5G iBox** | 5G i-Box 50 Méga • Jusqu'à 50 Méga • 3h d'appels • 5G i-Box 100 Méga • Jusqu'à 100 Méga • 4h d'appels • 50 Méga, 100 Méga |
-| **Inwi iDar Duo** | 2H d'appels • 3H d'appels |
-| **Inwi ADSL Xtra** | ADSL Xtra 149dh • 2 heures • ADSL Xtra 199dh • 5 heures • allant jusqu'à 20 Méga à un prix de 149 dh/mois seulement • Internet illimité jusqu'à 20 Méga |
-| **Inwi Fibre** | Fibre optique 20Méga • Jusqu'à 🠗 20 Méga | 🠕 20 Méga • 2 heures • Fibre optique 50Méga • Jusqu'à 🠗 50 Méga | 🠕 50 Méga • 3 heures • Fibre optique 100Méga • Jusqu'à 🠗 100 Méga | 🠕 100 Méga • 4 heures • Fibre optique 200Méga • Jusqu'à 🠗 200 Méga | 🠕 200 Méga • 6 heures |
+| **Orange Mobile** | ⚠️ Erreur de lecture |
+| **Orange Dar Box** | ⚠️ Erreur de lecture |
+| **Orange Fibre** | ⚠️ Erreur de lecture |
+| **IAM Mobile** | **Offre 119 DH/mois** : 15 Go | 5 Heures <br> **Offre 220 DH/mois** : 30 Go | 12 Heures <br> **Offre 119 DH/mois** : 22 Go | 2 Heures <br> **Offre 59 DH/mois** : 3 Go | 3 Heures <br> **Offre 99 DH/mois** : 11 Heures | 2 Go <br> **Offre 220 DH/mois** : 22 Heures | 12 Go <br> **Offre 99 DH/mois** : 13 Go | 4 Heures <br> **Offre 249 DH/mois** : 25 Go | 20 Heures <br> **Offre 349 DH/mois** : 55 Go | 15 Heures <br> **Offre 165 DH/mois** : 14 Go | 14 Heures <br> **Offre 349 DH/mois** : 30 Go | 30 Heures <br> **Offre 59 DH/mois** : 11 Go | 1 Heure <br> **Offre 99 DH/mois** : 20 Go | 1 Heure <br> **Offre 249 DH/mois** : 45 Go | 5 Heures <br> **Offre 165 DH/mois** : 30 Go | 3 Heures <br> **Offre À partir de 28 DH/mois** :  |
+| **IAM Box 5G** | **Offre 400 DH/mois** :  |
+| **Inwi Mobile** | **Forfait appels illimités +150 Go** : Dhs/mois <br> **Forfait illimité Réseaux Sociaux + 15Go** : Dhs/mois <br> **Forfait 18Go + 5H + WhatsApp Illimité** : Dhs/mois <br> **Forfait 40Go + 4h + Whatsapp illimité** : Dhs/mois <br> **Forfait Appels illimités + 35Go** : Dhs/mois <br> **Forfait Appels illimités + 60Go** : Dhs <br> **Forfait FLEXI 11GO+1H** : Dhs/mois <br> **Forfait appels illimités +75 Go** : Dhs/mois <br> **Forfait 35Go + 2h+ Whatsapp illimité** : Dhs/mois <br> **Forfait 17Go + 17h + Appels illimités vers inwi** : Dhs/mois <br> **Forfait 11h + 11Go + illimité vers inwi** : Dhs/mois <br> **Forfait appels illimités +125 Go** : Dhs/mois <br> **Forfait 30Go + 1H + WhatsApp Illimité** : Dhs/mois |
+| **Inwi Fibre** | **Forfait 50 Méga 299dh : Parfait pour les foyers multi-utilisateurs : regardez vos séries en HD, jouez en ligne et téléchargez sans attendre.** :  |
+| **Yoxo Maroc** | ⚠️ Erreur de lecture |
+| **Injoy Maroc** | **Je souscris à mon forfait iNJOY** :  <br> **Vivez la liberté avec nos forfaits iNJOY : flexibles et sans engagement !** :  <br> **Forfait iNJOY** :  <br> **Plongez dans l'expérience digitale complète de iNJOY directement sur votre mobile !** :  <br> **Je choisis mon forfait iNJOY** :  <br> **Souscription à mon forfait iNJOY** :  <br> **Personnalisez votre forfait iNJOY** :  <br> **2026 iNJOY | All rights reserved** :  |
