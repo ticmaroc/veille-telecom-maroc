@@ -6,56 +6,64 @@ from playwright.async_api import async_playwright
 async def scrape_orange_fibre(page):
     results = []
     try:
-        print("🕵️ Analyse des composants visuels d'Orange...")
+        print("🔭 Ouverture d'une vue large pour voir les 6 offres...")
         await page.goto("https://www.orange.ma/WiFi-a-la-Maison/Fibre-d-Orange/Offres-Fibre-d-Orange", 
                         wait_until="domcontentloaded", timeout=30000)
         
-        # On attend que les images soient chargées dans le carrousel
-        await asyncio.sleep(8)
+        # On attend que le carrousel s'initialise
+        await asyncio.sleep(10)
 
-        # On récupère TOUTES les images de la page
-        images = await page.query_selector_all("img")
-        detected_prices = []
+        # On cherche TOUTES les cartes, même celles qui essaient de se cacher
+        # On utilise un sélecteur plus large pour ne rien rater
+        cards = await page.query_selector_all(".fibre-card, .owl-item")
+        
+        print(f"📊 Cartes détectées : {len(cards)}")
 
-        for img in images:
-            src = await img.get_attribute("src") or ""
-            alt = await img.get_attribute("alt") or ""
+        for card in cards:
+            # On vérifie si la carte est vide (certaines cartes de carrousel sont des clones vides)
+            html = await card.inner_html()
+            if "img" not in html:
+                continue
+
+            # --- Extraction Vitesse ---
+            vitesse = "Inconnue"
+            img_v = await card.query_selector("img[src*='mega'], img[src*='go'], img[alt*='Méga']")
+            if img_v:
+                src_v = await img_v.get_attribute("src")
+                mv = re.search(r'(\d+)', src_v)
+                if mv: vitesse = f"{mv.group(1)}M"
+
+            # --- Extraction Prix ---
+            prix = "Prix Image"
+            img_p = await card.query_selector("img[src*='dh']")
+            if img_p:
+                src_p = await img_p.get_attribute("src")
+                mp = re.search(r'(\d+)', src_p)
+                if mp: prix = f"{mp.group(1)} DH"
             
-            # On cherche des chiffres liés au prix dans le nom du fichier ou le texte alternatif
-            # On cherche un pattern de 3 chiffres (ex: 249, 349...)
-            match = re.search(r'(\d{3,4})', src)
-            if match and ("dh" in src.lower() or "go" in src.lower() or "mega" in alt.lower()):
-                price = match.group(1)
-                if price not in detected_prices and int(price) > 100:
-                    detected_prices.append(price)
+            # Nettoyage des doublons : on n'ajoute que si la vitesse n'est pas déjà là
+            entry = f"Orange Fibre {vitesse} : {prix}"
+            if vitesse != "Inconnue" and entry not in results:
+                results.append(entry)
 
-        # On trie les prix du plus petit au plus grand
-        detected_prices.sort(key=int)
-
-        # On associe aux offres connues (20M, 50M, 100M...)
-        speeds = ["20M", "50M", "100M", "200M", "500M", "1G"]
-        for i, price in enumerate(detected_prices):
-            if i < len(speeds):
-                results.append(f"Orange Fibre {speeds[i]} : {price} DH")
-
-        if not results:
-            return ["⚠️ Aucun prix détecté dans les noms d'images."]
-
+        # Tri final par vitesse pour avoir 20, 50, 100, 200, 500, 1000
         return results
-
     except Exception as e:
         return [f"❌ Erreur : {str(e)}"]
 
 async def main():
     async with async_playwright() as p:
         browser = await p.chromium.launch(headless=True)
-        # On simule un écran large pour éviter le carrousel mobile qui cache des infos
-        context = await browser.new_context(viewport={'width': 1920, 'height': 1080})
+        # LA CLÉ : Une fenêtre de 3000px de large pour forcer l'affichage de tout le carrousel
+        context = await browser.new_context(viewport={'width': 3000, 'height': 1000})
         page = await context.new_page()
         
         data = await scrape_orange_fibre(page)
         
-        print("\n=== RÉSULTATS DE LA VEILLE TELECOM ===")
+        print("\n--- SYNTHÈSE COMPLÈTE (6 OFFRES) ---")
+        # On trie les résultats par le nombre de Méga pour la propreté
+        data.sort(key=lambda x: int(re.search(r'(\d+)', x).group(1)) if re.search(r'(\d+)', x) else 0)
+        
         for line in data:
             print(f"✅ {line}")
 
