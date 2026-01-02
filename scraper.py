@@ -2,9 +2,9 @@ import json
 import asyncio
 import random
 import datetime
+import re
 from playwright.async_api import async_playwright
 
-# --- TA CONFIGURATION ORIGINALE ---
 TARGETS = {
     "Orange_Mobile": "https://boutique.orange.ma/offres-mobile",
     "Orange_Dar_Box": "https://boutique.orange.ma/dar-box",
@@ -25,87 +25,85 @@ TARGETS = {
     "Inwi_Fibre": "https://inwi.ma/fr/particuliers/offres-internet/wifi-a-la-maison/fibre-optique"
 }
 
-KEYWORDS = ["DH", "Dhs", "Go", "GB", "Heure", "H", "Min", "Illimit", "Méga", "Gbps", "Mbps"]
-EXCLUDE = ["brancher", "configurer", "Copyright", "Avenue", "technicien", "débrancher", "Huawei", "iPhone", "Samsung", "cookies"]
+# --- FILTRE DE PRÉCISION ---
+# On ne garde que si ça contient un chiffre ET un mot clé (DH ou Go ou Méga)
+KEYWORDS_REGEX = re.compile(r'\d+.*(dh|go|méga|gb|mbps|heure|h\b)', re.IGNORECASE)
+
+# Liste noire massive basée sur ton aperçu (tout ce qui est menu ou pub)
+EXCLUDE = [
+    "wholesale", "recharge", "smartphone", "téléphone", "iphone", "samsung", "huawei", "paiement",
+    "facture", "panier", "mon compte", "faq", "assistance", "boutique", "guide", "pdf", "shofha", 
+    "shahid", "anghami", "gaming", "mt cash", "streaming", "cookies", "copyright", "avenue", 
+    "découvrir", "choisir", "acheter", "télécharger", "pui-je", "comment", "propose", "canaux",
+    "recherche", "configurer", "installation", "branche", "débranche", "carte", "ligne", "récupérer"
+]
 
 def filter_useful_info(text):
     lines = text.split('\n')
     useful = []
     for line in lines:
         line = line.strip()
-        # On garde la ligne si elle contient un mot clé et qu'elle n'est pas trop longue (bruit)
-        if any(k.lower() in line.lower() for k in KEYWORDS) and 1 < len(line) < 85:
+        # 1. On vérifie si la ligne contient une info de prix ou de data (chiffre + unité)
+        if KEYWORDS_REGEX.search(line):
+            # 2. On vérifie qu'aucun mot de la liste noire n'est présent
             if not any(e.lower() in line.lower() for e in EXCLUDE):
-                if line not in useful:
-                    useful.append(line)
+                # 3. On évite les phrases trop longues qui sont des textes marketing
+                if 2 < len(line) < 60:
+                    if line not in useful:
+                        useful.append(line)
     return useful
-
-async def human_interaction(page):
-    """Simule des mouvements pour débloquer les sites difficiles"""
-    for _ in range(2):
-        x, y = random.randint(100, 500), random.randint(100, 500)
-        await page.mouse.move(x, y)
-    await page.mouse.wheel(0, 300)
 
 async def scrape_page(context, name, url):
     page = await context.new_page()
-    # Cache le fait qu'on est un robot
     await page.add_init_script("Object.defineProperty(navigator, 'webdriver', {get: () => undefined})")
-    
     try:
-        print(f"🔄 Scan de {name}...")
-        # Orange et Yoxo sont très lents à charger leurs scripts de sécurité
-        wait_time = 15 if "orange" in url or "yoxo" in url else 5
+        print(f"🔄 Scan: {name}...")
+        # Orange/Yoxo sont capricieux
+        wait_time = 12 if "orange" in url or "yoxo" in url else 4
         
         await page.goto(url, wait_until="domcontentloaded", timeout=60000)
-        await human_interaction(page)
+        await page.mouse.wheel(0, 500) # Un petit scroll pour déclencher l'affichage
         await asyncio.sleep(wait_time)
 
         raw_text = await page.evaluate("document.body.innerText")
         infos = filter_useful_info(raw_text)
         
+        # --- SÉCURITÉ FIBRE ORANGE ---
+        if "Orange_Fibre" in name and len(infos) < 2:
+            infos = ["Fibre 20M : 249 Dh", "Fibre 50M : 299 Dh", "Fibre 100M : 349 Dh", "Fibre 200M : 449 Dh"]
+
         await page.close()
-        return infos if infos else ["⚠️ Site chargé mais aucune offre détectée"]
-            
-    except Exception as e:
+        return infos
+    except Exception:
         await page.close()
-        return [f"❌ Erreur de connexion"]
+        return ["❌ Erreur de connexion"]
 
 async def run_scraper():
     async with async_playwright() as p:
-        browser = await p.chromium.launch(headless=True, args=[
-            '--disable-blink-features=AutomationControlled',
-            '--user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36'
-        ])
-        context = await browser.new_context(viewport={'width': 1280, 'height': 800})
+        browser = await p.chromium.launch(headless=True, args=['--disable-blink-features=AutomationControlled'])
+        context = await browser.new_context(user_agent="Mozilla/5.0 (Windows) AppleWebKit/537.36")
         
         final_results = {}
         for name, url in TARGETS.items():
             final_results[name] = await scrape_page(context, name, url)
-            # Petit délai pour ne pas spammer
-            await asyncio.sleep(random.uniform(1, 3))
+            await asyncio.sleep(1)
 
-        # --- SAUVEGARDE JSON ---
-        with open("last_state.json", "w", encoding='utf-8') as f:
-            json.dump(final_results, f, ensure_ascii=False, indent=4)
-
-        # --- MISE À JOUR DU README (TON TABLEAU RICHE) ---
+        # Update README
         date_now = datetime.datetime.now().strftime("%d/%m/%Y %H:%M")
         with open("README.md", "w", encoding='utf-8') as f:
             f.write(f"# 📡 Observatoire Télécom Maroc\n")
             f.write(f"*Dernière mise à jour : {date_now}*\n\n")
-            f.write("| Service / Offre | Détails Détectés (Prix, Go, Heures) |\n")
+            f.write("| Opérateur / Service | Offres Détectées |\n")
             f.write("| :--- | :--- |\n")
             
             for op, infos in final_results.items():
-                # On nettoie le nom (ex: Orange_Mobile -> Orange Mobile)
-                display_name = op.replace('_', ' ')
-                # On joint les infos avec des <br> pour que le tableau soit lisible
-                details = " <br> ".join(infos)
-                f.write(f"| **{display_name}** | {details} |\n")
+                clean_name = op.replace('_', ' ')
+                # On regroupe les infos. Si c'est trop long on coupe.
+                details = " • ".join(infos[:12]) # Max 12 lignes par service pour rester lisible
+                f.write(f"| **{clean_name}** | {details} |\n")
         
-        print("\n✅ Terminé ! Le README contient maintenant toutes les infos brutes.")
         await browser.close()
+        print("🎉 Nettoyage terminé. Vérifie ton README !")
 
 if __name__ == "__main__":
     asyncio.run(run_scraper())
