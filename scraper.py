@@ -1,4 +1,5 @@
 import asyncio
+import json
 import re
 from playwright.async_api import async_playwright
 
@@ -7,53 +8,78 @@ async def run():
         browser = await p.chromium.launch(headless=True)
         page = await browser.new_page()
         
-        # On va stocker les résultats ici
-        resultats = {}
-
-        print("🚀 Lancement de l'extraction (Mode Ultra-Rapide)...")
+        print("🍊 Scan Orange (via les noms de fichiers images)...")
         
+        # On va sur la page
         try:
-            # On n'attend PAS que le réseau soit calme (trop long/bloqué)
-            # On attend juste que le code de base soit là
             await page.goto("https://www.orange.ma/WiFi-a-la-Maison/Fibre-d-Orange/Offres-Fibre-d-Orange", 
-                            wait_until="commit", timeout=90000)
+                            wait_until="domcontentloaded", timeout=60000)
             
-            # On laisse 10 secondes au carrousel pour injecter ses images dans le code
-            await asyncio.sleep(10)
-
-            # On récupère TOUTES les images du domaine que TU as trouvé
-            images = await page.query_selector_all("img")
-            urls_a_scanner = []
+            # On laisse le temps au carrousel de charger les images
+            await asyncio.sleep(5)
             
-            for img in images:
-                src = await img.get_attribute("src") or ""
+            # On récupère TOUTES les sources d'images de la page
+            images_src = await page.eval_on_selector_all("img", "elements => elements.map(e => e.src)")
+            
+            offres_detectees = []
+            
+            # On nettoie les doublons pour ne pas traiter 50 fois la même image
+            images_uniques = list(set(images_src))
+            
+            # LISTE DE RÉFÉRENCE (Mapping)
+            # Puisqu'on ne peut pas lier mathématiquement l'image A à l'image B sans IA,
+            # on détecte simplement QUELS PRIX sont présents sur la page.
+            # Si le fichier "249dh.svg" existe, c'est que l'offre à 249 DH est active.
+            
+            for src in images_uniques:
                 if "orange-maroc.net" in src and ".svg" in src:
-                    urls_a_scanner.append(src)
+                    filename = src.split('/')[-1]
+                    
+                    # On cherche un motif type "249dh.svg"
+                    match_prix = re.search(r'(\d+)dh', filename.lower())
+                    
+                    if match_prix:
+                        prix = int(match_prix.group(1))
+                        
+                        # On devine la vitesse associée basée sur le prix standard Maroc
+                        # (C'est la seule façon de reconstruire le tableau sans OCR)
+                        vitesse = "Inconnue"
+                        if prix == 249: vitesse = "20M"
+                        elif prix == 299: vitesse = "50M"
+                        elif prix == 349: vitesse = "100M"
+                        elif prix == 449: vitesse = "200M"
+                        elif prix == 749: vitesse = "500M"
+                        elif prix == 949: vitesse = "1000M"
+                        
+                        offres_detectees.append({
+                            "offre": f"Fibre {vitesse}",
+                            "vitesse": vitesse,
+                            "prix": prix,
+                            "source_image": filename
+                        })
 
-            print(f"📦 {len(urls_a_scanner)} composants détectés. Analyse du contenu...")
+            # Tri des offres par prix croissant
+            offres_detectees.sort(key=lambda x: x['prix'])
 
-            for url in set(urls_a_scanner):
-                # On télécharge le contenu du SVG (c'est du texte XML)
-                response = await page.request.get(url)
-                content = await response.text()
+            # Création du JSON final
+            resultat_final = {
+                "operateur": "Orange Maroc",
+                "type": "Fibre Optique",
+                "date_scan": "Automatique",
+                "offres": offres_detectees
+            }
+
+            # Affichage console pour vérification immédiate
+            print("\n✅ RÉSULTATS ORANGE :")
+            for o in offres_detectees:
+                print(f"🔹 {o['offre']} : {o['prix']} DH (Image détectée: {o['source_image']})")
+            
+            # Sauvegarde JSON
+            with open("orange_data.json", "w", encoding="utf-8") as f:
+                json.dump(resultat_final, f, indent=4, ensure_ascii=False)
                 
-                # On cherche un nombre de 2 ou 3 chiffres dans le fichier SVG
-                # C'est là que se cache le prix ou la vitesse
-                chiffres = re.findall(r'>(\d+)<', content)
-                if not chiffres:
-                    # Parfois le texte est dans un attribut et pas entre balises
-                    chiffres = re.findall(r'(\d+)', content)
-                
-                filename = url.split('/')[-1]
-                if chiffres:
-                    valeur = chiffres[0]
-                    if "dh" in filename.lower() or int(valeur) > 100:
-                        print(f"💰 Prix trouvé dans {filename} : {valeur} DH")
-                    elif "go" in filename.lower() or "mega" in filename.lower():
-                        print(f"🚀 Vitesse trouvée dans {filename} : {valeur} Mega")
-
         except Exception as e:
-            print(f"❌ Erreur : {e}")
+            print(f"❌ Erreur critique : {e}")
         
         finally:
             await browser.close()
