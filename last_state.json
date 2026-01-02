@@ -1,10 +1,5 @@
 {
-    "Orange_Fibre": [
-        "Orange Fibre 20 Méga : 249 Dh",
-        "Orange Fibre 50 Méga : Prix en image (Probablement 299 DH)",
-        "Orange Fibre 100 Méga : Prix en image (Probablement 349 DH)",
-        "Orange Fibre 200 Méga : Prix en image (Probablement 449 DH)",
-        "Orange Fibre 500 Méga : Prix en image (Probablement 749 DH)",
-        "Orange Fibre 1000 Méga : Prix en image (Probablement 949 DH)"
+    "Orange": [
+        "❌ Erreur : Timeout 60000ms exceeded."
     ]
 }
