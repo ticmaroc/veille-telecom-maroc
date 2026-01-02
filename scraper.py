@@ -8,38 +8,56 @@ async def run():
         browser = await p.chromium.launch(headless=True)
         page = await browser.new_page()
         
-        print("🔍 Connexion et extraction des données dynamiques...")
+        print("🌐 Connexion à Orange.ma...")
+        # On charge la page
         await page.goto("https://www.orange.ma/WiFi-a-la-Maison/Fibre-d-Orange/Offres-Fibre-d-Orange", wait_until="networkidle")
-
-        # On extrait l'objet de configuration du site (là où sont les vrais prix)
-        data = await page.evaluate("() => window.drupalSettings")
         
-        # On transforme tout l'objet en texte pour chercher les prix dedans
-        raw_data = json.dumps(data)
+        # On récupère toutes les images venant du serveur d'assets
+        images = await page.query_selector_all("img")
         
-        # On cherche tous les prix potentiels (ex: 249, 349...) associés à la fibre
-        # On cherche des nombres qui reviennent souvent dans les structures de prix
-        tarifs_detectes = re.findall(r'"price":"?(\d+)"?', raw_data)
-        if not tarifs_detectes:
-            # Si le mot "price" n'est pas utilisé, on cherche les montants classiques
-            tarifs_detectes = re.findall(r'>(249|299|349|449|649|749|949)<', await page.content())
+        extracted_data = []
+        current_speed = None
 
-        print("\n--- RÉSULTATS DE LA VEILLE (TEMPS RÉEL) ---")
-        
-        # On récupère les débits affichés sur la page
-        content = await page.content()
-        debits = re.findall(r'(\d+)\s*(?:Méga|Go)', content)
-        debits = sorted(list(set([d for d in debits if d in ['20', '50', '100', '200', '500', '1000']])), key=int)
+        for img in images:
+            src = await img.get_attribute("src") or ""
+            if "orange-maroc.net" in src:
+                filename = src.split('/')[-1]
+                
+                # 1. On détecte la vitesse (ex: 20go.svg)
+                if "go.svg" in filename or "mega.svg" in filename:
+                    match = re.search(r'(\d+)', filename)
+                    if match:
+                        current_speed = match.group(1)
+                
+                # 2. On détecte le prix (ex: 249dh.svg)
+                elif "dh.svg" in filename:
+                    match = re.search(r'(\d+)', filename)
+                    if match and current_speed:
+                        extracted_data.append({
+                            "vitesse": f"{current_speed}M",
+                            "prix": int(match.group(1)),
+                            "devise": "DH"
+                        })
+                        current_speed = None # Reset pour la carte suivante
 
-        if tarifs_detectes:
-            # On élimine les doublons et on trie
-            prix_reels = sorted(list(set(tarifs_detectes)), key=int)
-            for i, debit in enumerate(debits):
-                # On associe le débit au prix trouvé à la même position
-                p = prix_reels[i] if i < len(prix_reels) else "Non détecté"
-                print(f"📡 Offre {debit}M : {p} DH")
-        else:
-            print("⚠️ Aucun prix dynamique trouvé. Orange a peut-être déplacé ses données.")
+        # Nettoyage des doublons (le carrousel répète parfois les éléments)
+        unique_offres = list({v['vitesse']: v for v in extracted_data}.values())
+        # Tri par vitesse pour un rendu propre
+        unique_offres.sort(key=lambda x: int(x['vitesse'].replace('M', '')))
+
+        # --- RÉSULTAT FINAL ---
+        final_output = {
+            "operateur": "Orange",
+            "service": "Fibre Optique",
+            "offres": unique_offres
+        }
+
+        # Sauvegarde en JSON
+        with open("last_state.json", "w", encoding="utf-8") as f:
+            json.dump(final_output, f, indent=4, ensure_ascii=False)
+
+        print("\n✅ SCRAPPING RÉUSSI !")
+        print(json.dumps(final_output, indent=4))
 
         await browser.close()
 
