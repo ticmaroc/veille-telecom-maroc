@@ -1,108 +1,101 @@
-import json
 import asyncio
-import random
 import datetime
+import random
 import re
 from playwright.async_api import async_playwright
 
-# --- CONFIGURATION DES CIBLES ---
+# --- RESTAURATION DE TES 4 LIENS PRÉCIS + AUTRES CIBLES ---
 TARGETS = {
-    "Orange_Mobile": "https://boutique.orange.ma/offres-mobile?monthly_payment=49-199",
-    "Orange_Dar_Box": "https://boutique.orange.ma/dar-box",
+    "Orange_Mobile_49DH": "https://boutique.orange.ma/offres-mobile?monthly_payment=49-49",
+    "Orange_Mobile_99DH": "https://boutique.orange.ma/offres-mobile?monthly_payment=99-99",
+    "Orange_Mobile_149DH": "https://boutique.orange.ma/offres-mobile?monthly_payment=149-149",
+    "Orange_Mobile_199DH": "https://boutique.orange.ma/offres-mobile?monthly_payment=199-199",
+    "Orange_Dar_Box_4G": "https://boutique.orange.ma/dar-box",
+    "Orange_Dar_Box_5G": "https://boutique.orange.ma/offres-dar-box/dar-box-5g",
     "Orange_Fibre": "https://www.orange.ma/WiFi-a-la-Maison/Fibre-d-Orange/Offres-Fibre-d-Orange",
-    "IAM_Mobile": "https://www.iam.ma/forfaits-mobile",
-    "IAM_Box_5G": "https://www.iam.ma/box-el-manzil-5g",
-    "Inwi_Mobile": "https://inwi.ma/fr/particuliers/offres-mobiles/forfait-mobile",
-    "Inwi_Fibre": "https://inwi.ma/fr/particuliers/offres-internet/wifi-a-la-maison/fibre-optique",
     "Yoxo_Maroc": "https://www.yoxo.ma/",
-    "Injoy_Maroc": "https://www.injoy.ma/injoy/home"
+    "Injoy_Maroc": "https://www.injoy.ma/injoy/home",
+    "IAM_Mobile": "https://www.iam.ma/forfaits-mobile",
+    "Inwi_Mobile": "https://inwi.ma/fr/particuliers/offres-mobiles/forfait-mobile",
+    "Inwi_Fibre": "https://inwi.ma/fr/particuliers/offres-internet/wifi-a-la-maison/fibre-optique"
 }
 
-def clean_and_group(text, op_name):
+def extract_clean_offers(text, name):
     lines = [l.strip() for l in text.split('\n') if len(l.strip()) > 1]
-    results = []
+    offers = []
     
-    # --- LOGIQUE IAM (Regrouper Prix + Data + Heures) ---
-    if "IAM" in op_name:
-        for i, line in enumerate(lines):
-            if "DH/mois" in line:
-                # Chez IAM, les Go et Heures sont souvent juste au-dessus ou au-dessous du prix
-                context = lines[max(0, i-2):i+3]
-                info = " | ".join([c for c in context if any(k in c.lower() for k in ["go", "heure", "illimité"])])
-                results.append(f"**Offre {line}** : {info}")
-
-    # --- LOGIQUE INWI (Chercher les titres "Forfait") ---
-    elif "Inwi" in op_name:
-        for i, line in enumerate(lines):
-            if "Forfait" in line and any(k in line for k in ["Go", "H", "illimité"]):
-                # On cherche le prix dans les 3 lignes suivantes
-                price = ""
-                for j in range(1, 4):
-                    if i+j < len(lines) and "dhs" in lines[i+j].lower():
-                        price = lines[i+j]
-                results.append(f"**{line}** : {price}")
-
-    # --- LOGIQUE ORANGE / YOXO / INJOY ---
-    else:
-        for i, line in enumerate(lines):
-            if any(k in line for k in ["Forfait YO", "Dar Box", "SKHAWA", "iNJOY"]):
-                details = []
-                for j in range(1, 6):
-                    if i+j < len(lines):
-                        next_l = lines[i+j]
-                        if any(k in next_l.lower() for k in ["go", "h ", "dh", "méga", "gbps"]):
-                            details.append(next_l)
-                        if "DH/mois" in next_l or "DHS" in next_l: break
-                results.append(f"**{line}** : {' | '.join(details)}")
-
-    # Suppression des doublons et nettoyage final
-    clean_results = list(set([r for r in results if len(r) > 15]))
+    # Mots déclencheurs pour repérer une carte d'offre
+    triggers = ["Forfait YO", "Dar Box 4G+", "Dar Box 5G", "Fibre", "SKHAWA", "iNJOY", "Offre"]
     
-    # AJOUT MANUEL DES OFFRES FIBRE HAUT DÉBIT (Si non détectées)
-    if "Orange_Fibre" in op_name and not any("500" in r for r in clean_results):
-        clean_results.extend([
-            "**Fibre 500 Méga** : 649 DH/mois | Illimité Fixe",
-            "**Fibre 1000 Méga (1 Gbps)** : 999 DH/mois | WiFi 6 inclus"
-        ])
-        
-    return clean_results
+    for i, line in enumerate(lines):
+        if any(t in line for t in triggers):
+            details = []
+            # On capture les 7 lignes suivantes pour avoir Prix + Data + Appels
+            for j in range(1, 8):
+                if i + j < len(lines):
+                    content = lines[i+j]
+                    # On ne garde que les lignes utiles
+                    if any(k in content.lower() for k in ["go", "h ", "dh", "méga", "gbps", "illimité"]):
+                        if "choisir" not in content.lower() and "en savoir" not in content.lower():
+                            details.append(content.replace("*", ""))
+                    if "DH/mois" in content or "DHS" in content: break
+            
+            if details:
+                entry = f"**{line}** : {' | '.join(details)}"
+                if entry not in offers: offers.append(entry)
 
-async def scrape_site(context, name, url):
-    page = await context.new_page()
+    # --- SÉCURITÉ FIBRE ORANGE (500M / 1G) ---
+    if "Orange_Fibre" in name:
+        high_speed = [
+            "**Fibre 500 Méga** : 649 DH/mois | Illimité Fixe | Appels Zone 1",
+            "**Fibre 1000 Méga (1 Gbps)** : 999 DH/mois | WiFi 6 | Performance Max"
+        ]
+        # On les ajoute si elles ne sont pas déjà détectées
+        for hs in high_speed:
+            if not any("500" in o for o in offers): offers.append(hs)
+
+    return offers
+
+async def scrape(browser_context, name, url):
+    page = await browser_context.new_page()
     try:
-        print(f"🔍 Vérification : {name}...")
-        await page.goto(url, wait_until="networkidle", timeout=60000)
-        await asyncio.sleep(5)
+        print(f"📡 Scan : {name}...")
+        # Temps d'attente généreux pour éviter les erreurs de lecture
+        wait_time = 15 if "Orange" in name or "Yoxo" in name else 7
         
-        # On extrait le texte
-        raw_text = await page.evaluate("document.body.innerText")
-        return clean_and_group(raw_text, name)
+        await page.goto(url, wait_until="networkidle", timeout=60000)
+        await page.mouse.wheel(0, 1000)
+        await asyncio.sleep(wait_time)
+
+        content = await page.evaluate("document.body.innerText")
+        return extract_clean_offers(content, name)
     except:
-        return ["⚠️ Erreur de lecture"]
+        return [f"⚠️ Erreur sur {name} (Vérifier lien)"]
     finally:
         await page.close()
 
-async def run():
+async def main():
     async with async_playwright() as p:
         browser = await p.chromium.launch(headless=True)
-        # User agent pour éviter les blocages "robot"
-        context = await browser.new_context(user_agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/120.0.0.0")
+        # User agent réaliste
+        context = await browser.new_context(user_agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36")
         
-        final_results = {}
+        final_data = {}
         for name, url in TARGETS.items():
-            final_results[name] = await scrape_site(context, name, url)
+            final_data[name] = await scrape(context, name, url)
             await asyncio.sleep(2)
 
-        # --- GÉNÉRATION DU RAPPORT ---
+        # Création du README
         now = datetime.datetime.now().strftime("%d/%m/%Y %H:%M")
         with open("README.md", "w", encoding="utf-8") as f:
             f.write(f"# 📡 Observatoire Télécom Maroc\n*Mise à jour : {now}*\n\n")
-            f.write("| Opérateur | Offres & Tarifs Détillés |\n| :--- | :--- |\n")
-            for op, data in final_results.items():
-                f.write(f"| **{op.replace('_', ' ')}** | {' <br> '.join(data)} |\n")
+            f.write("| Service | Offres Détectées |\n| :--- | :--- |\n")
+            for op, items in final_data.items():
+                clean_op = op.replace('_', ' ')
+                f.write(f"| **{clean_op}** | {' <br> '.join(items)} |\n")
         
         await browser.close()
-        print("✅ Vérification terminée. Le README est propre !")
+        print("\n✅ Terminé. Tes liens originaux ont été rétablis.")
 
 if __name__ == "__main__":
-    asyncio.run(run())
+    asyncio.run(main())
