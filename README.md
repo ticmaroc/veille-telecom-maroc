@@ -1,13 +1,13 @@
 # 📡 Observatoire Télécom Maroc
-*Mise à jour : 09/01/2026 06:45*
+*Mise à jour : 09/01/2026 13:00*
 
 | Service | Détails (Data, Heures, Prix) |
 | :--- | :--- |
-| **Orange Mobile 49DH** | Aucune offre détectée |
-| **Orange Mobile 99DH** | Aucune offre détectée |
-| **Orange Mobile 149DH** | ⚠️ Page non lue |
+| **Orange Mobile 49DH** | ⚠️ Page non lue |
+| **Orange Mobile 99DH** | ⚠️ Page non lue |
+| **Orange Mobile 149DH** | Aucune offre détectée |
 | **Orange Mobile 199DH** | ⚠️ Page non lue |
-| **Orange Dar Box** | Aucune offre détectée |
+| **Orange Dar Box** | ⚠️ Page non lue |
 | **Orange Dar Box 5G** | ⚠️ Page non lue |
 | **Orange ADSL** | ⚠️ Page non lue |
 | **Orange Fibre** | **Fibre** : Orange est accessible à partir de 249 Dh par mois seulement. <br> **Fibre 500M** : 649 DH/mois | **Fibre 1Gbps** : 999 DH/mois |
