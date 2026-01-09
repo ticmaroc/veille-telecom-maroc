@@ -1,11 +1,11 @@
 # 📡 Observatoire Télécom Maroc
-*Mise à jour : 09/01/2026 13:00*
+*Mise à jour : 09/01/2026 18:46*
 
 | Service | Détails (Data, Heures, Prix) |
 | :--- | :--- |
 | **Orange Mobile 49DH** | ⚠️ Page non lue |
-| **Orange Mobile 99DH** | ⚠️ Page non lue |
-| **Orange Mobile 149DH** | Aucune offre détectée |
+| **Orange Mobile 99DH** | Aucune offre détectée |
+| **Orange Mobile 149DH** | ⚠️ Page non lue |
 | **Orange Mobile 199DH** | ⚠️ Page non lue |
 | **Orange Dar Box** | ⚠️ Page non lue |
 | **Orange Dar Box 5G** | ⚠️ Page non lue |
