@@ -1,5 +1,5 @@
 # 📡 Observatoire Télécom Maroc
-*Mise à jour : 05/02/2026 13:14*
+*Mise à jour : 05/02/2026 19:01*
 
 | Service | Détails (Data, Heures, Prix) |
 | :--- | :--- |
@@ -9,7 +9,7 @@
 | **Orange Mobile 199DH** | **Dar Box** : Forfait 49 DH | Forfait 99 DH | Forfait 149 DH | Forfait 199 DH | Forfait Yo 40Go+5H 199Dh | 5H d'appels | 40Go d'internet | illimité Réseaux Sociaux | DH/mois |
 | **Orange Dar Box** | **Dar Box** : Internet illimité | 2H d’appels vers le mobile national et fixe national | DH/mois <br> **Dar Box** : Internet illimité | 2H d’appels vers le mobile national et fixe international (zone 1) | Appels illimités vers le fixe national | DH/mois |
 | **Orange Dar Box 5G** | **Dar Box** : 5G 299Dh | Internet illimité | 50 Méga | 3H d’appels vers le mobile national et fixe international (zone 1) | DH/mois | Frais de mise en service 299 Dh | Box Wifi 5G 799 Dh 349 Dh <br> **Dar Box** : 5G 349Dh | Internet illimité | 100 Méga | 4H d’appels vers le mobile national et fixe international (zone 1) | DH/mois | Frais de mise en service 349 Dh | Box Wifi 5G 799 Dh 349 Dh | WiFi illimité |
-| **Orange ADSL** | **ADSL** : 99Dh de frais ponctuels reportables sur la 1ère facture. <br> **ADSL** : Branchez la Box d’Orange et surfez en toute tranquillité en profitant de l’illimité <br> **ADSL** : Surfez en toute tranquillité en profitant de l’illimité |
+| **Orange ADSL** | ⚠️ Page non lue |
 | **Orange Fibre** | **Fibre** : Orange est accessible à partir de 249 Dh par mois seulement. <br> **Fibre 500M** : 649 DH/mois | **Fibre 1Gbps** : 999 DH/mois |
 | **IAM Mobile Forfaits** | Aucune offre détectée |
 | **IAM Mobile Illimites** | Aucune offre détectée |
