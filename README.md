@@ -1,9 +1,9 @@
 # 📡 Observatoire Télécom Maroc
-*Mise à jour : 26/02/2026 07:11*
+*Mise à jour : 26/02/2026 13:19*
 
 | Service | Détails (Data, Heures, Prix) |
 | :--- | :--- |
-| **Orange Mobile 49DH** | **Dar Box** : 49 Dh | 99 Dh | 149 Dh | 199 Dh | 299 Dh | 399 Dh | 499 Dh | 649 Dh <br> **Forfait YO** : 3h + 3Go 49 Dh | 3H d'appels | 3Go d'internet | appels illimités vers Orange | DH/mois <br> **Forfait YO** : 2Go + 1H 49 Dh | 2Go d'internet | 1H d'appels | appels illimités vers Orange | illimité Réseaux Sociaux | DH/mois <br> **Forfait YO** : 5h + 1Go 49 Dh | 5H d'appels vers le national | 1Go d'internet | appels illimités vers Orange | WhatsApp illimité | DH/mois <br> **Forfait YO** : 11Go+1H 49 Dh | 11Go d'internet | 1H d'appels | WhatsApp illimité | DH/mois |
+| **Orange Mobile 49DH** | ⚠️ Page non lue |
 | **Orange Mobile 99DH** | **Dar Box** : 49 Dh | 99 Dh | 149 Dh | 199 Dh | 299 Dh | 399 Dh | 499 Dh | 649 Dh | 25Go + 1h d’appel + 1service 99dh | 25Go d'internet | 1H d'appels | DH/mois |
 | **Orange Mobile 149DH** | **Dar Box** : 49 Dh | 99 Dh | 149 Dh | 199 Dh | 299 Dh | 399 Dh | 499 Dh | 649 Dh | Forfait Yo 40Go + 4H 149Dh | 40Go d'internet | 4H d'appels | illimité Whatsapp | DH/mois |
 | **Orange Mobile 199DH** | **Dar Box** : 49 Dh | 99 Dh | 149 Dh | 199 Dh | 299 Dh | 399 Dh | 499 Dh | 649 Dh | 52Go + 10h d’appels + 2services 199dh | 52Go d'internet | 10H d'appels | DH/mois |
@@ -12,7 +12,7 @@
 | **Orange ADSL** | ⚠️ Page non lue |
 | **Orange Fibre** | **Fibre** : Orange est accessible à partir de 249 Dh par mois seulement. <br> **Fibre 500M** : 649 DH/mois | **Fibre 1Gbps** : 999 DH/mois |
 | **IAM Mobile Forfaits** | Aucune offre détectée |
-| **IAM Mobile Illimites** | ⚠️ Page non lue |
+| **IAM Mobile Illimites** | Aucune offre détectée |
 | **IAM Box 5G** | Aucune offre détectée |
 | **IAM Box 4G** | Aucune offre détectée |
 | **IAM ADSL** | **ADSL** : Internet illimité pour toute la famille <br> **ADSL** : 299 DH/mois | Appels Illimités vers fixes nationaux | 3H vers mobile national | Frais Installation: 100 DH <br> **ADSL** : 249 DH/mois | Frais Installation: 100 DH <br> **ADSL** : 199 DH/mois | Frais Installation: 100 DH <br> **ADSL** : Connexion internet illimitée 24/7 | 349 DH | 185 DH | 189 DH | Box MiFi 4G Huawei +15 Go | 299 DH |
