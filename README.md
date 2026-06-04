@@ -1,5 +1,5 @@
 # 📡 Observatoire Télécom Maroc
-*Mise à jour : 04/06/2026 10:04*
+*Mise à jour : 04/06/2026 15:26*
 
 | Service | Détails (Data, Heures, Prix) |
 | :--- | :--- |
