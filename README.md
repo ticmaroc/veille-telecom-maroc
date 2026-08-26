@@ -1,16 +1,16 @@
 # 📡 Observatoire Télécom Maroc
-*Mise à jour : 25/08/2026 18:47*
+*Mise à jour : 26/08/2026 01:31*
 
 | Service | Détails (Data, Heures, Prix) |
 | :--- | :--- |
-| **Orange Mobile 49DH** | ⚠️ Page non lue |
+| **Orange Mobile 49DH** | **Dar Box** : 49 Dh | 99 Dh | 149 Dh | 199 Dh | 299 Dh | 399 Dh | 499 Dh | 649 Dh <br> **Forfait YO** : 3h + 3Go 49 Dh | 3H d'appels | 3Go d'internet | appels illimités vers Orange | DH/mois <br> **Forfait YO** : 2Go + 1H 49 Dh | 2Go d'internet | 1H d'appels | appels illimités vers Orange | illimité Réseaux Sociaux | DH/mois <br> **Forfait YO** : 5h + 1Go 49 Dh | 5H d'appels vers le national | 1Go d'internet | appels illimités vers Orange | WhatsApp illimité | DH/mois <br> **Forfait YO** : 11Go+1H 49 Dh | 11Go d'internet | 1H d'appels | WhatsApp illimité | DH/mois |
 | **Orange Mobile 99DH** | **Dar Box** : 49 Dh | 99 Dh | 149 Dh | 199 Dh | 299 Dh | 399 Dh | 499 Dh | 649 Dh | 25Go + 1h d’appel + 1service 99dh | 25Go d'internet | 1H d'appels | DH/mois |
 | **Orange Mobile 149DH** | **Dar Box** : 49 Dh | 99 Dh | 149 Dh | 199 Dh | 299 Dh | 399 Dh | 499 Dh | 649 Dh | Forfait Yo 40Go + 4H 149Dh | 40Go d'internet | 4H d'appels | illimité Whatsapp | DH/mois |
 | **Orange Mobile 199DH** | **Dar Box** : 49 Dh | 99 Dh | 149 Dh | 199 Dh | 299 Dh | 399 Dh | 499 Dh | 649 Dh | 52Go + 10h d’appels + 2services 199dh | 52Go d'internet | 10H d'appels | DH/mois |
 | **Orange Dar Box** | **Dar Box** : Internet illimité | 2H d’appels vers le mobile national et fixe national | DH/mois <br> **Dar Box** : Internet illimité | 2H d’appels vers le mobile national et fixe international (zone 1) | Appels illimités vers le fixe national | DH/mois |
 | **Orange Dar Box 5G** | **Dar Box** : 5G 299Dh | Internet illimité | 50 Méga | 3H d’appels vers le mobile national et fixe international (zone 1) | DH/mois | Frais de mise en service 299 Dh | Box Wifi 5G 799 Dh 349 Dh <br> **Dar Box** : 5G 349Dh | Internet illimité | 100 Méga | 4H d’appels vers le mobile national et fixe international (zone 1) | DH/mois | Frais de mise en service 349 Dh | Box Wifi 5G 799 Dh 349 Dh | WiFi illimité |
 | **Orange ADSL** | ⚠️ Page non lue |
-| **Orange Fibre** | **Fibre** : 2H d’appels vers le mobile national et fixe international | Appels illimités vers fixes nationaux | DH/mois <br> **Fibre 500M** : 649 DH/mois | **Fibre 1Gbps** : 999 DH/mois |
+| **Orange Fibre** | ⚠️ Page non lue |
 | **IAM Mobile Forfaits** | Aucune offre détectée |
 | **IAM Mobile Illimites** | Aucune offre détectée |
 | **IAM Box 5G** | Aucune offre détectée |
