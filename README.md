@@ -1,5 +1,5 @@
 # 📡 Observatoire Télécom Maroc
-*Mise à jour : 04/09/2026 03:33*
+*Mise à jour : 04/09/2026 10:56*
 
 | Service | Détails (Data, Heures, Prix) |
 | :--- | :--- |
@@ -10,7 +10,7 @@
 | **Orange Dar Box** | **Dar Box** : Internet illimité | 2H d’appels vers le mobile national et fixe national | DH/mois <br> **Dar Box** : Internet illimité | 2H d’appels vers le mobile national et fixe international (zone 1) | Appels illimités vers le fixe national | DH/mois |
 | **Orange Dar Box 5G** | **Dar Box** : 5G 299Dh | Internet illimité | 50 Méga | 3H d’appels vers le mobile national et fixe international (zone 1) | DH/mois | Frais de mise en service 299 Dh | Box Wifi 5G 799 Dh 349 Dh <br> **Dar Box** : 5G 349Dh | Internet illimité | 100 Méga | 4H d’appels vers le mobile national et fixe international (zone 1) | DH/mois | Frais de mise en service 349 Dh | Box Wifi 5G 799 Dh 349 Dh | WiFi illimité |
 | **Orange ADSL** | ⚠️ Page non lue |
-| **Orange Fibre** | ⚠️ Page non lue |
+| **Orange Fibre** | **Fibre** : 2H d’appels vers le mobile national et fixe international | Appels illimités vers fixes nationaux | DH/mois <br> **Fibre 500M** : 649 DH/mois | **Fibre 1Gbps** : 999 DH/mois |
 | **IAM Mobile Forfaits** | Aucune offre détectée |
 | **IAM Mobile Illimites** | Aucune offre détectée |
 | **IAM Box 5G** | Aucune offre détectée |
