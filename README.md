@@ -1,9 +1,9 @@
 # 📡 Observatoire Télécom Maroc
-*Mise à jour : 12/09/2026 10:22*
+*Mise à jour : 12/09/2026 15:17*
 
 | Service | Détails (Data, Heures, Prix) |
 | :--- | :--- |
-| **Orange Mobile 49DH** | Aucune offre détectée |
+| **Orange Mobile 49DH** | ⚠️ Page non lue |
 | **Orange Mobile 99DH** | **Dar Box** : 49 Dh | 99 Dh | 149 Dh | 199 Dh | 299 Dh | 399 Dh | 499 Dh | 649 Dh | 25Go + 1h d’appel + 1service 99dh | 25Go d'internet | 1H d'appels | DH/mois |
 | **Orange Mobile 149DH** | **Dar Box** : 49 Dh | 99 Dh | 149 Dh | 199 Dh | 299 Dh | 399 Dh | 499 Dh | 649 Dh | Forfait Yo 40Go + 4H 149Dh | 40Go d'internet | 4H d'appels | illimité Whatsapp | DH/mois |
 | **Orange Mobile 199DH** | **Dar Box** : 49 Dh | 99 Dh | 149 Dh | 199 Dh | 299 Dh | 399 Dh | 499 Dh | 649 Dh | 52Go + 10h d’appels + 2services 199dh | 52Go d'internet | 10H d'appels | DH/mois |
