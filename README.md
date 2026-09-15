@@ -1,16 +1,16 @@
 # 📡 Observatoire Télécom Maroc
-*Mise à jour : 14/09/2026 21:44*
+*Mise à jour : 15/09/2026 04:03*
 
 | Service | Détails (Data, Heures, Prix) |
 | :--- | :--- |
 | **Orange Mobile 49DH** | ⚠️ Page non lue |
-| **Orange Mobile 99DH** | Aucune offre détectée |
+| **Orange Mobile 99DH** | **Dar Box** : 49 Dh | 99 Dh | 149 Dh | 199 Dh | 299 Dh | 399 Dh | 499 Dh | 649 Dh | 25Go + 1h d’appel + 1service 99dh | 25Go d'internet | 1H d'appels | DH/mois |
 | **Orange Mobile 149DH** | ⚠️ Page non lue |
-| **Orange Mobile 199DH** | Aucune offre détectée |
-| **Orange Dar Box** | Aucune offre détectée |
+| **Orange Mobile 199DH** | ⚠️ Page non lue |
+| **Orange Dar Box** | **Dar Box** : Internet illimité | 2H d’appels vers le mobile national et fixe national | DH/mois <br> **Dar Box** : Internet illimité | 2H d’appels vers le mobile national et fixe international (zone 1) | Appels illimités vers le fixe national | DH/mois |
 | **Orange Dar Box 5G** | Aucune offre détectée |
 | **Orange ADSL** | ⚠️ Page non lue |
-| **Orange Fibre** | **Fibre 500M** : 649 DH/mois | **Fibre 1Gbps** : 999 DH/mois |
+| **Orange Fibre** | ⚠️ Page non lue |
 | **IAM Mobile Forfaits** | Aucune offre détectée |
 | **IAM Mobile Illimites** | Aucune offre détectée |
 | **IAM Box 5G** | Aucune offre détectée |
