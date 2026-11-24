@@ -1,5 +1,5 @@
 # 📡 Observatoire Télécom Maroc
-*Mise à jour : 23/11/2026 23:47*
+*Mise à jour : 24/11/2026 09:08*
 
 | Service | Détails (Data, Heures, Prix) |
 | :--- | :--- |
@@ -15,7 +15,7 @@
 | **IAM Mobile Illimites** | Aucune offre détectée |
 | **IAM Box 5G** | Aucune offre détectée |
 | **IAM Box 4G** | Aucune offre détectée |
-| **IAM ADSL** | **ADSL** : Internet illimité pour toute la famille <br> **ADSL** : 299 DH/mois | Appels Illimités vers fixes nationaux | 5H vers mobile dont 1 H vers l’international <br> **ADSL** : 249 DH/mois | Appels Illimités vers fixes nationaux | 3H vers mobile national <br> **ADSL** : Connexion internet illimitée 24/7 | 349 DH | 185 DH | 189 DH | 775 DH |
+| **IAM ADSL** | Aucune offre détectée |
 | **Inwi Mobile** | ⚠️ Page non lue |
 | **Inwi 5G iBox** | ⚠️ Page non lue |
 | **Inwi iDar Duo** | ⚠️ Page non lue |
