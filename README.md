@@ -1,5 +1,5 @@
 # 📡 Observatoire Télécom Maroc
-*Mise à jour : 24/11/2026 09:08*
+*Mise à jour : 24/11/2026 22:15*
 
 | Service | Détails (Data, Heures, Prix) |
 | :--- | :--- |
@@ -21,5 +21,5 @@
 | **Inwi iDar Duo** | ⚠️ Page non lue |
 | **Inwi ADSL** | ⚠️ Page non lue |
 | **Inwi Fibre** | ⚠️ Page non lue |
-| **Yoxo** | ⚠️ Page non lue |
+| **Yoxo** | **YOXO** : 20GO | 1H d'appels | SMS illimité | DHS | MADAYRAAACH !! | 60GO | 5H d'appels |
 | **Injoy** | ⚠️ Page non lue |
